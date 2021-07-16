@@ -21,7 +21,7 @@ public class MainActivity<respuestas> extends AppCompatActivity implements TextT
 
     private static final int RECOGNIZE_SPEECH_ACTIVITY = 2;
     private static final int RECONOCEDOR_VOZ = 7;
-    private ArrayList <Respuestas> respuestas;
+    private ArrayList <Resposta> respostas;
     private TextToSpeech leer;
     private Object TextView;
     ListView listViewInicial;
@@ -39,9 +39,9 @@ public class MainActivity<respuestas> extends AppCompatActivity implements TextT
         super.onActivityResult( requestCode, resultCode, data );
 
         if (resultCode == RESULT_OK && requestCode == RECONOCEDOR_VOZ) {
-            ArrayList <String> reconocido =
+            ArrayList <String> reconhecido =
                     data.getStringArrayListExtra( RecognizerIntent.EXTRA_RESULTS );
-            String escuchado = reconocido.get( 0 );
+            String escuchado = reconhecido.get( 0 );
             prepararRespuesta( escuchado );
         }
     }
@@ -50,36 +50,35 @@ public class MainActivity<respuestas> extends AppCompatActivity implements TextT
         String normalizar = Normalizer.normalize( escuchado, Normalizer.Form.NFD );
         String sintilde = normalizar.replaceAll( "[^\\p{ASCII}]", "" );
 
-        //    int resultado;
-        //  String respuesta = respuest.get(0).getRespuestas();
-        for (int i = 0; i < respuestas.size(); i++) {
-            int resultado = sintilde.toLowerCase().indexOf( respuestas.get( i ).getCuestion() );
+        for (int i = 0; i < respostas.size(); i++) {
+            int resultado = sintilde.toLowerCase().indexOf( respostas.get( i ).getCuestion() );
             if (resultado != -1) {
-                //         respuesta = respuestas.get(i);
-              //  responder( respuestas.get( i ) );
+                //      respuesta = respuestas.get(i);
+               responder( respostas.get( i ) );
                 return;
             }
         }
 
     }
 
-   /* private void responder ( Respuestas respuesta ) {
-        startActivity(listviewInicial());
+    private void responder ( Resposta resposta ) {
+   //     startActivity(listviewInicial());
 
+        listviewInicial();
 
     }
 
-*/
+
     private void inicializar () {
 
-        respuestas = proveerDatos();
+        respostas = proveerDatos();
 
         leer = new TextToSpeech( this, this );
     }
 
-    private ArrayList <Respuestas> proveerDatos () {
-        ArrayList <Respuestas> respuestas = new ArrayList <>();
-        respuestas.add( new Respuestas( "tarefas",
+    private ArrayList <Resposta> proveerDatos () {
+        ArrayList <Resposta> respuestas = new ArrayList <>();
+        respuestas.add( new Resposta( "tarefas",
                 " ", listviewInicial()));
 
         return respuestas;
